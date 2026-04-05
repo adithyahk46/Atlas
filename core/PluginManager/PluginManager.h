@@ -23,7 +23,9 @@ class QTreeWidgetItem;
 QT_END_NAMESPACE
 
 
-class PLUGINMANAGER_EXPORT PluginManager : public QObject
+//class PLUGINMANAGER_EXPORT PluginManager : public QObject
+
+class PluginManager : public QObject
 {
 	Q_OBJECT
 

@@ -1,4 +1,6 @@
-﻿#include <ViewerWidget/ViewerWidget.h>
+﻿#include <cstdint>
+#include <QtGui/QOpenGLFunctions>
+#include <ViewerWidget/ViewerWidget.h>
 
 #include <QGridLayout>
 
@@ -10,7 +12,6 @@
 #include <osgDB/ReadFile>
 #include <osgText/Text>
 #include <osgViewer/ViewerEventHandlers>
-#include <osgQt/GraphicsWindowQt>
 #include <osgGA/StateSetManipulator>
 
 #include <osgEarth/GLUtils>
@@ -18,6 +19,8 @@
 #include <DataManager/FindNode.hpp>
 
 #include "Compass.h"
+
+#include "osgQt/GraphicsWindowQt.h"
 
 static const int  DEFAULT_FRAME_RATE = 60;
 

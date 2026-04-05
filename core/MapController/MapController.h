@@ -32,7 +32,9 @@ class SpatialReference;
  *
  * It defines moving strategies for navigating between coords and nodes
  */
-class MAPCONTROLLER_EXPORT  MapController: public QObject, public osgGA::OrbitManipulator
+//class MAPCONTROLLER_EXPORT  MapController : public QObject, public osgGA::OrbitManipulator
+
+class MapController: public QObject, public osgGA::OrbitManipulator
 {
 	Q_OBJECT
 

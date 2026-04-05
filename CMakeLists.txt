@@ -1,31 +1,60 @@
-cmake_minimum_required(VERSION 3.1)
+# Modernized CMakeLists.txt for Atlas (Upgraded from ~2014 version)
+# Assumes CMake 3.20+, Qt5 (or Qt6), OSG 3.8+, OSGEarth 3.x
 
-project(Atlas)
+cmake_minimum_required(VERSION 3.20)
 
-option(PRELOAD_MAP "Preload default map." OFF)
+project(Atlas LANGUAGES CXX)
 
-if (PRELOAD_MAP)
-  add_definitions(-DPRELOAD_MAP)
+# Options
+option(PRELOAD_MAP "Preload default map." ON)
+
+# Set C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Build type default
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
 endif()
 
+# Paths
 set(DIST_PATH ${PROJECT_BINARY_DIR}/dist)
 set(DIST_PLUGINS_PATH ${DIST_PATH}/plugins)
 set(DIST_LIB_PATH ${DIST_PATH}/lib)
 set(DIST_RESOURCES_PATH ${DIST_PATH}/resources)
 
-set(CMAKE_MODULE_PATH "${Atlas_SOURCE_DIR}/CMakeModules;${CMAKE_MODULE_PATH}")
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_INSTALL_PREFIX, "/usr")
+
+# Module path
+#set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/CMakeModules;${CMAKE_MODULE_PATH}")
+
+# Qt setup (Qt5; for Qt6, replace with qt6_standard_project_setup() and Qt6:: components)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${DIST_PATH})
-set(QT_MIN_VERSION 5.11.0)
+set(CMAKE_AUTOUIC ON)  # Modern alternative to QT5_WRAP_UI
+set(CMAKE_AUTOUIC_SEARCH_PATHS
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/core
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/AtlasMainWindow
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/DataManager
+)
+set(QT_MIN_VERSION 5.15.0)  # Updated from 5.11
 
-find_package(Qt5 COMPONENTS Core Gui Widgets Svg OpenGL Network Xml REQUIRED)
-find_package(OpenSceneGraph 3.4.0 REQUIRED osgViewer osgGA osgDB osgManipulator osgSim osgParticle osgText osgUtil)
-find_package(OsgEarth 2.9 REQUIRED osgEarthFeatures osgEarthUtil osgEarthSymbology osgEarthAnnotation)
-#find_package(FriBiDi)
-find_package(GDAL)
+# Output directories
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${DIST_PATH})
+
+
+set(CMAKE_TOOLCHAIN_FILE "D:/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
+set(CMAKE_PREFIX_PATH "D:/vcpkg/installed/x64-windows;D:/github/osgearth/install/osgearth_lib;C:/Qt/5.15.18/msvc2019_64")
+
+
+
+# Dependencies
+find_package(Qt5 ${QT_MIN_VERSION} COMPONENTS Core Gui Widgets Svg OpenGL Network Xml REQUIRED)
+find_package(Threads REQUIRED)  # For threading
+find_package(OpenSceneGraph 3.6 REQUIRED COMPONENTS osgViewer osgGA osgDB osgManipulator osgSim osgParticle osgText osgUtil)
+find_package(osgEarth CONFIG REQUIRED)
+find_package(GDAL REQUIRED)
+# find_package(FriBiDi)  # Uncomment if needed
 
 include_directories(
     ${PROJECT_BINARY_DIR}
@@ -71,6 +100,7 @@ set(${PROJECT_NAME}_HDRS
     core/ViewerWidget/Compass.h
     core/ViewerWidget/ViewerWidget_global.h
     core/ViewerWidget/ViewerWidget.h
+    core/osgQt/GraphicsWindowQt.h
     )
 
 set(${PROJECT_NAME}_SRCS
@@ -94,6 +124,7 @@ set(${PROJECT_NAME}_SRCS
     core/MousePicker/MousePicker.cpp
     core/ViewerWidget/Compass.cpp
     core/ViewerWidget/ViewerWidget.cpp
+    core/osgQt/GraphicsWindowQt.cpp
 
 #    core/AtlasMainWindow/AtlasMainWindow.ui
 #    core/DataManager/StyleTab.ui
@@ -110,27 +141,63 @@ set (${PROJECT_NAME}_UIS
     )
 
 #QT5_ADD_RESOURCES(RSCS ${enzarmonitor_RSCS})
-QT5_WRAP_UI(UIS ${${PROJECT_NAME}_UIS})
+#QT5_WRAP_UI(UIS ${${PROJECT_NAME}_UIS})
 
-add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_SRCS} ${${PROJECT_NAME}_HDRS} ${UIS})
-
-target_link_libraries(${PROJECT_NAME}
-  Qt5::Core
-  Qt5::Gui
-  Qt5::Widgets
-  Qt5::OpenGL
-  Qt5::Network
-  Qt5::Xml
-  -lpthread
-  ${OPENSCENEGRAPH_LIBRARIES}
-  ${GDAL_LIBRARY}
-  ${OSGEARTH_LIBRARY}
-  ${OSGEARTHANNOTATION_LIBRARY}
-  ${OSGEARTHFEATURES_LIBRARY}
-  ${OSGEARTHUTIL_LIBRARY}
-  ${OSGEARTHSYMBOLOGY_LIBRARY}
-  -losgQt5
+add_executable(${PROJECT_NAME}
+    ${${PROJECT_NAME}_SRCS}
+    ${${PROJECT_NAME}_HDRS}
+    ${${PROJECT_NAME}_UIS}
 )
+
+if(Qt5_FOUND)
+    message(STATUS "Qt5 found: ${Qt5_VERSION}")
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        Qt5::Core
+        Qt5::Gui
+        Qt5::Widgets
+        Qt5::Svg
+        Qt5::OpenGL
+        Qt5::Network
+        Qt5::Xml
+    )
+else()
+    message(FATAL_ERROR "Qt5 not found. Please ensure it is installed and CMAKE_PREFIX_PATH is set correctly.")
+endif()
+
+if(OpenSceneGraph_FOUND AND NOT TARGET OpenSceneGraph::OpenSceneGraph)
+    add_library(OpenSceneGraph::OpenSceneGraph INTERFACE IMPORTED)
+
+    set_target_properties(OpenSceneGraph::OpenSceneGraph PROPERTIES
+        INTERFACE_INCLUDE_DIRECTORIES "${OPENSCENEGRAPH_INCLUDE_DIRS}"
+        INTERFACE_LINK_LIBRARIES "${OPENSCENEGRAPH_LIBRARIES}"
+    )
+    message(STATUS "OpenSceneGraph found: ${OPENSCENEGRAPH_VERSION} : ${OPENSCENEGRAPH_INCLUDE_DIRS} ")
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+    OpenSceneGraph::OpenSceneGraph
+    )
+else()
+    message(FATAL_ERROR "OpenSceneGraph not found. Please ensure it is installed and CMAKE_PREFIX_PATH is set correctly.")
+endif()
+
+if(osgEarth_FOUND)
+    message(STATUS "osgEarth found: ${OSGEARTH_VERSION}")
+    target_link_libraries(${PROJECT_NAME} PRIVATE osgEarth::osgEarth)
+else()
+    message(FATAL_ERROR "osgEarth not found. Please ensure it is installed and CMAKE_PREFIX_PATH is set correctly.")
+endif() 
+
+if(GDAL_FOUND)
+    message(STATUS "GDAL found: ${GDAL_VERSION}")
+    target_link_libraries(${PROJECT_NAME} PRIVATE GDAL::GDAL)
+else()
+    message(FATAL_ERROR "GDAL not found. Please ensure it is installed and CMAKE_PREFIX_PATH is set correctly.")
+endif()
+
+# Linking (use imported targets)
+#target_link_libraries(${PROJECT_NAME} PRIVATE
+#    Threads::Threads
+#    # Add OSGQt if available: find_package(osgQt REQUIRED); target_link_libraries(... osgQt::osgQt)
+#)
 
 # Defining plugins.
 function(DefinePlugin pluginName)

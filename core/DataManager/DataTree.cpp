@@ -201,13 +201,13 @@ void  DataTree::switchRecord(const QString &nodeName, bool checked)
 				layer->setVisible(checked);
 			}
 		}
-		else if (osgEarth::TerrainLayer *layer = dynamic_cast<osgEarth::TerrainLayer *>(record->layer()))
-		{
-			for (int i = 0; i < MAX_SUBVIEW; i++)
-			{
-				layer->setVisible(checked);
-			}
-		}
+		//else if (osgEarth::TerrainLayer *layer = dynamic_cast<osgEarth::TerrainLayer *>(record->layer()))
+		//{
+		//	for (int i = 0; i < MAX_SUBVIEW; i++)
+		//	{
+		//		layer->setEnabled(checked);
+		//	}
+		//}
 		else
 		{
 			for (int i = 0; i < MAX_SUBVIEW; i++)

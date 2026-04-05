@@ -18,7 +18,9 @@ namespace Ui {
 	class AtlasMainWindowClass;
 }
 
-class ATLASMAINWINDOW_EXPORT AtlasMainWindow : public QMainWindow
+//class ATLASMAINWINDOW_EXPORT AtlasMainWindow : public QMainWindow
+
+class AtlasMainWindow : public QMainWindow
 {
 public:
 	AtlasMainWindow(QWidget *parent = nullptr, Qt::WindowFlags flags = 0);

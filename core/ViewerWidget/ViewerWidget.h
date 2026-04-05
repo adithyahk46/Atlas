@@ -24,7 +24,9 @@ namespace osg {
 /*
 	A QWidget that renders the osg scene with multiple view support
 */
-class VIEWERWIDGET_EXPORT ViewerWidget : public QWidget, public osgViewer::CompositeViewer
+//class VIEWERWIDGET_EXPORT ViewerWidget : public QWidget, public osgViewer::CompositeViewer
+
+class ViewerWidget : public QWidget, public osgViewer::CompositeViewer
 {
 	Q_OBJECT
 

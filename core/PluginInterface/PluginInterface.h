@@ -61,7 +61,9 @@ namespace osgEarth
  *   Add your data to _currentAnchor whenever possible, and make sure their coord is relative to the _currentAnchor.
  *   You can use _anchoredOffset to transform any world coord to anchored coord
  */
-class PLUGININTERFACE_EXPORT  PluginInterface: public MousePicker
+//class PLUGININTERFACE_EXPORT  PluginInterface : public MousePicker
+
+class PluginInterface: public MousePicker
 {
 	Q_OBJECT
 

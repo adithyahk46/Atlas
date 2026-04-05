@@ -4,6 +4,7 @@
 
 #include <osgEarth/TerrainLayer>
 #include <osgEarth/GeoData>
+#include <osgEarth/Layer>
 
 DataRecord::DataRecord(const QString& name, DataRecord *parent):
   QTreeWidgetItem(parent, QStringList(name)),

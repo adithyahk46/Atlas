@@ -51,7 +51,9 @@ class ViewerWidget;
  * connection with the main program, ie. Atlas class, so that any plugins
  * can inherit and get easy access.
  */
-class MOUSEPICKER_EXPORT  MousePicker: public QObject, public osgGA::GUIEventHandler
+//class MOUSEPICKER_EXPORT  MousePicker : public QObject, public osgGA::GUIEventHandler
+
+class MousePicker: public QObject, public osgGA::GUIEventHandler
 {
 	Q_OBJECT
 

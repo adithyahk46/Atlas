@@ -13,6 +13,7 @@
 #include <osg/PositionAttitudeTransform>
 #include <osgViewer/View>
 
+#include <osgEarth/Layer>
 #include <osgEarth/TerrainLayer>
 #include <osgEarth/Viewpoint>
 

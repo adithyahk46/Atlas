@@ -14,7 +14,9 @@ namespace osgEarth {
 	class Layer;
 }
 
-class DATAMANAGER_EXPORT DataRecord : public QTreeWidgetItem
+//class DATAMANAGER_EXPORT DataRecord : public QTreeWidgetItem
+
+class DataRecord : public QTreeWidgetItem
 {
 public:
 	// Dummy node

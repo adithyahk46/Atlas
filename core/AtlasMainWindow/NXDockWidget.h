@@ -15,7 +15,9 @@ class QVBoxLayout;
 
 /*! Auto Hide dockwidget
 */
-class ATLASMAINWINDOW_EXPORT NXDockWidget : public QDockWidget
+//class ATLASMAINWINDOW_EXPORT NXDockWidget : public QDockWidget
+
+class  NXDockWidget : public QDockWidget
 {
 	Q_OBJECT
 

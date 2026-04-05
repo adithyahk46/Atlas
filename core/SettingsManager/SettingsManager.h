@@ -17,8 +17,9 @@ QT_END_NAMESPACE
 namespace osgEarth {
 	class SpatialReference;
 }
+//class SETTINGSMANAGER_EXPORT SettingsManager : public QObject
 
-class SETTINGSMANAGER_EXPORT SettingsManager : public QObject
+class SettingsManager : public QObject
 {
 	Q_OBJECT
 

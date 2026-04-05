@@ -49,7 +49,9 @@ class ColorVisitor;
 class FontVisitor;
 class IconSymbolVisitor;
 
-class DATAMANAGER_EXPORT DataManager : public QObject
+//class DATAMANAGER_EXPORT DataManager : public QObject
+
+class DataManager : public QObject
 {
 	Q_OBJECT
 
