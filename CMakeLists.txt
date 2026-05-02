@@ -21,6 +21,11 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${DIST_PATH})
 set(QT_MIN_VERSION 5.11.0)
 
+set(CMAKE_TOOLCHAIN_FILE "D:/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
+set(CMAKE_PREFIX_PATH "D:/vcpkg/installed/x64-windows;D:/github/osgearth/install/osgearth_lib;C:/Qt/5.15.18/msvc2019_64")
+
+
+
 find_package(Qt5 COMPONENTS Core Gui Widgets Svg OpenGL Network Xml REQUIRED)
 find_package(OpenSceneGraph 3.4.0 REQUIRED osgViewer osgGA osgDB osgManipulator osgSim osgParticle osgText osgUtil)
 find_package(OsgEarth 2.9 REQUIRED osgEarthFeatures osgEarthUtil osgEarthSymbology osgEarthAnnotation)
@@ -113,6 +118,17 @@ set (${PROJECT_NAME}_UIS
 QT5_WRAP_UI(UIS ${${PROJECT_NAME}_UIS})
 
 add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_SRCS} ${${PROJECT_NAME}_HDRS} ${UIS})
+
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+  ATLASMAINWINDOW_LIB
+  DATAMANAGER_LIB
+  MAPCONTROLLER_LIB
+  MOUSEPICKER_LIB
+  PLUGININTERFACE_LIB
+  PLUGINMANAGER_LIB
+  SETTINGSMANAGER_LIB
+  VIEWERWIDGET_LIB
+)
 
 target_link_libraries(${PROJECT_NAME}
   Qt5::Core

@@ -16,6 +16,8 @@
 
 #include <SettingsManager/SettingsManager.h>
 
+#include <osgEarth/Layer>
+
 DataTree::DataTree(SettingsManager *settings, QWidget *parent):
 	QTreeWidget(parent),
 	_settingsManager(settings)
@@ -205,7 +207,7 @@ void  DataTree::switchRecord(const QString &nodeName, bool checked)
 		{
 			for (int i = 0; i < MAX_SUBVIEW; i++)
 			{
-				layer->setVisible(checked);
+                // layer->setVisible(checked);
 			}
 		}
 		else

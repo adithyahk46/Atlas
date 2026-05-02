@@ -408,7 +408,7 @@ void DataManager::doubleClickTreeSlot(QTreeWidgetItem* item, int column)
 		const osgEarth::SpatialReference* source_srs = record->extent()->getSRS();
 
 		osgEarth::Bounds bound;
-		source_srs->guessBounds(bound);
+        // source_srs->guessBounds(bound);
 
 		if (ymin == bound.yMin())
 			ymin += 0.00000001;

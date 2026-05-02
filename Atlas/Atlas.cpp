@@ -26,10 +26,10 @@ using namespace std;
 #include <osgEarth/Map>
 #include <osgEarth/MapNode>
 #include <osgEarth/Registry>
-#include <osgEarthUtil/EarthManipulator>
-#include <osgEarthUtil/AutoClipPlaneHandler>
-#include <osgEarthUtil/LogarithmicDepthBuffer>
-#include <osgEarthUtil/ExampleResources>
+#include <osgEarth/EarthManipulator>
+#include <osgEarth/AutoClipPlaneHandler>
+#include <osgEarth/LogarithmicDepthBuffer>
+#include <osgEarth/ExampleResources>
 
 #include <gdal_priv.h>
 
@@ -40,6 +40,12 @@ using namespace std;
 #include <PluginManager/PluginManager.h>
 #include <MapController/MapController.h>
 #include <ui_AtlasMainWindow.h>
+
+
+#include <osgDB/Registry>
+#include <osgDB/ReadFile>
+#include <osgDB/Options>
+
 
 Atlas::Atlas(QWidget *parent, Qt::WindowFlags flags):
 	AtlasMainWindow(parent, flags)
@@ -180,16 +186,25 @@ void  Atlas::initDataStructure()
 			baseMapPath = QStringLiteral("resources/earth_files/projected.earth");
 		}
 
-		osg::ref_ptr<osgDB::Options>  myReadOptions = osgEarth::Registry::cloneOrCreateOptions(0);
-		osgEarth::Config              c;
-		c.add("elevation_smoothing", false);
-		osgEarth::TerrainOptions  to(c);
-		osgEarth::MapNodeOptions  defMNO;
-		defMNO.setTerrainOptions(to);
+        // osg::ref_ptr<osgDB::Options>  myReadOptions = osgEarth::Registry::cloneOrCreateOptions(0);
+        // osgEarth::Config              c;
+        // c.add("elevation_smoothing", false);
+        // osgEarth::TerrainOptions  to(c);
+        // osgEarth::MapNodeOptions  defMNO;
+        // defMNO.setTerrainOptions(to);
 
-		myReadOptions->setPluginStringData("osgEarth.defaultOptions", defMNO.getConfig().toJSON());
+        // myReadOptions->setPluginStringData("osgEarth.defaultOptions", defMNO.getConfig().toJSON());
 
-		osg::Node *baseMap = osgDB::readNodeFile(baseMapPath.toStdString(), myReadOptions);
+        // osg::Node *baseMap = osgDB::readNodeFile(baseMapPath.toStdString(), myReadOptions);
+
+        osg::ref_ptr<osgDB::Options> myReadOptions =
+            osgEarth::Registry::cloneOrCreateOptions(nullptr);
+
+        // Just load the .earth file directly
+        osg::ref_ptr<osg::Node> baseMap =
+            osgDB::readNodeFile(baseMapPath.toStdString());
+
+
 		_mapNode[i] = osgEarth::MapNode::get(baseMap);
 		_mapNode[i]->setName(QString("Map%1").arg(i).toStdString());
 		_mapNode[i]->setNodeMask((SHOW_IN_WINDOW_1 << i) | SHOW_IN_NO_WINDOW);
@@ -224,8 +239,8 @@ void  Atlas::initDataStructure()
 
 void  Atlas::resetCamera()
 {
-	if (_mainMap[0]->isGeocentric())
-	{
+    if (_mainMap[0]->getSRS()->isGeocentric())
+    {
 		osg::ref_ptr<osgEarth::Util::EarthManipulator>  manipulator =
 			dynamic_cast<osgEarth::Util::EarthManipulator *>(_mainViewerWidget->getMainView()->getCameraManipulator());
 
