@@ -76,6 +76,7 @@ set(${PROJECT_NAME}_HDRS
     core/ViewerWidget/Compass.h
     core/ViewerWidget/ViewerWidget_global.h
     core/ViewerWidget/ViewerWidget.h
+    core/osgQt/GraphicsWindowQt.h
     )
 
 set(${PROJECT_NAME}_SRCS
@@ -99,6 +100,7 @@ set(${PROJECT_NAME}_SRCS
     core/MousePicker/MousePicker.cpp
     core/ViewerWidget/Compass.cpp
     core/ViewerWidget/ViewerWidget.cpp
+    core/osgQt/GraphicsWindowQt.cpp
 
 #    core/AtlasMainWindow/AtlasMainWindow.ui
 #    core/DataManager/StyleTab.ui
@@ -119,6 +121,8 @@ QT5_WRAP_UI(UIS ${${PROJECT_NAME}_UIS})
 
 add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_SRCS} ${${PROJECT_NAME}_HDRS} ${UIS})
 
+set_target_properties(${PROJECT_NAME} PROPERTIES ENABLE_EXPORTS ON)
+
 target_compile_definitions(${PROJECT_NAME} PRIVATE
   ATLASMAINWINDOW_LIB
   DATAMANAGER_LIB
@@ -137,15 +141,15 @@ target_link_libraries(${PROJECT_NAME}
   Qt5::OpenGL
   Qt5::Network
   Qt5::Xml
-  -lpthread
+  # -lpthread
   ${OPENSCENEGRAPH_LIBRARIES}
   ${GDAL_LIBRARY}
   ${OSGEARTH_LIBRARY}
-  ${OSGEARTHANNOTATION_LIBRARY}
-  ${OSGEARTHFEATURES_LIBRARY}
-  ${OSGEARTHUTIL_LIBRARY}
-  ${OSGEARTHSYMBOLOGY_LIBRARY}
-  -losgQt5
+  # ${OSGEARTHANNOTATION_LIBRARY}
+  # ${OSGEARTHFEATURES_LIBRARY}
+  # ${OSGEARTHUTIL_LIBRARY}
+  # ${OSGEARTHSYMBOLOGY_LIBRARY}
+  # -losgQt5
 )
 
 # Defining plugins.

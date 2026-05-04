@@ -241,8 +241,8 @@ void  Atlas::resetCamera()
 {
     if (_mainMap[0]->getSRS()->isGeocentric())
     {
-		osg::ref_ptr<osgEarth::Util::EarthManipulator>  manipulator =
-			dynamic_cast<osgEarth::Util::EarthManipulator *>(_mainViewerWidget->getMainView()->getCameraManipulator());
+		osg::ref_ptr<osgEarth::Util::EarthManipulator>  manipulator = new osgEarth::Util::EarthManipulator;
+			// dynamic_cast<osgEarth::Util::EarthManipulator *>(_mainViewerWidget->getMainView()->getCameraManipulator());
 
 		if (!manipulator.valid())
 		{

@@ -8,7 +8,7 @@
 
 #include <osg/NodeCallback>
 #include <osg/CullFace>
-#include <osgQt/GraphicsWindowQt>
+#include <osgQt/GraphicsWindowQt.h>
 #include <osg/GraphicsContext>
 
 #include "openvrviewer.h"

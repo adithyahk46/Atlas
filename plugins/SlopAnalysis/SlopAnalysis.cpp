@@ -9,7 +9,7 @@
 #include <osg/PositionAttitudeTransform>
 #include <osgSim/OverlayNode>
 #include <osgUtil/SmoothingVisitor>
-#include <osgQt/GraphicsWindowQt>
+#include <osgQt/GraphicsWindowQt.h>
 #include <osgDB/Registry>
 
 #include <DataManager/FindNode.hpp>

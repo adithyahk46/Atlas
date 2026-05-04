@@ -9,12 +9,16 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${DIST_PLUGINS_PATH})
 
-find_package(Qt5Core CONFIG REQUIRED)
-find_package(Qt5Widgets CONFIG REQUIRED)
+find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
+find_package(OpenSceneGraph 3.4.0 REQUIRED osgViewer osgGA osgDB osgManipulator osgSim osgParticle osgText osgUtil)
 
 include_directories(
     ${Qt5Core_INCLUDE_DIRS}
+    ${Qt5Gui_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
+    ${OSG_INCLUDE_DIR}
+    ${OSGEARTH_INCLUDE_DIRS}
+    ${OSGEARTH_INCLUDE_DIR}
 )
 
 file(GLOB_RECURSE HFiles RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
@@ -38,5 +42,14 @@ set(${PROJECT_NAME}_JSONS
 add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_JSONS} ${${PROJECT_NAME}_SRCS} ${${PROJECT_NAME}_HDRS})
 
 target_link_libraries(${PROJECT_NAME}
-
+  Atlas
+  Qt5::Core
+  Qt5::Gui
+  Qt5::Widgets
+  ${OPENSCENEGRAPH_LIBRARIES}
+  ${OSGEARTH_LIBRARY}
+  # ${OSGEARTHANNOTATION_LIBRARY}
+  # ${OSGEARTHFEATURES_LIBRARY}
+  # ${OSGEARTHUTIL_LIBRARY}
+  # ${OSGEARTHSYMBOLOGY_LIBRARY}
 )

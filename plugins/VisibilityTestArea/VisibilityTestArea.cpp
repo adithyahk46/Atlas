@@ -21,7 +21,7 @@
 
 #include <osgUtil/SmoothingVisitor>
 #include <osgSim/OverlayNode>
-#include <osgQt/GraphicsWindowQt>
+#include <osgQt/GraphicsWindowQt.h>
 
 #include <ViewerWidget/ViewerWidget.h>
 

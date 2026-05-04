@@ -31,7 +31,7 @@ namespace Ped
 {
 /// Vector helper class. This is basically a struct with some related functions attached.
 /// x, y, and z are public, so that they can be accessed easily.
-class LIBEXPORT  Tvector
+class Tvector
 {
 public:
   /// Default constructor, which makes sure that all the values are set to 0.

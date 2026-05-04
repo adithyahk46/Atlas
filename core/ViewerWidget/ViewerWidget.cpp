@@ -10,7 +10,7 @@
 #include <osgDB/ReadFile>
 #include <osgText/Text>
 #include <osgViewer/ViewerEventHandlers>
-#include <osgQt/GraphicsWindowQt>
+#include <osgQt/GraphicsWindowQt.h>
 #include <osgGA/StateSetManipulator>
 
 #include <osgEarth/GLUtils>
